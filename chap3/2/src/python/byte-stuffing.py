@@ -2,11 +2,12 @@ import re
 
 infostring = input()
 flagstring = input()
-escstring = input()
+# escstring = input()
 
 info = infostring.split('=')[-1]
 flag = flagstring.split('=')[-1]
-esc = escstring.split('=')[-1]
+# esc = escstring.split('=')[-1]
+esc = '10'
 
 print("帧起始标志：{}，帧数据信息：{}，帧结束表示{}".format(flag, info, flag))
 frame = flag + re.sub(r'({}|{})'.format(flag, esc), r'{}\1'.format(esc), info) + flag
