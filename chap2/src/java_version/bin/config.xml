@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>parameters</comment>
+<entry key="BaudRate">9600</entry>
+<entry key="StopBits">1</entry>
+<entry key="DataBits">8</entry>
+<entry key="Parity">0</entry>
+</properties>
