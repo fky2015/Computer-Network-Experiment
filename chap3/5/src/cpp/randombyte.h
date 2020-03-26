@@ -20,7 +20,7 @@ private:
     bool set_exist(const std::string& str);
 public:
     randombyte();
-    std::string generate_str(int len=32);
+    std::string generate_str(int len=8);
 };
 
 
