@@ -1,3 +1,15 @@
+/**
+ * @file md5.h
+ * @The header file of md5.
+ * @author Jiewei Wei
+ * @mail weijieweijerry@163.com
+ * @github https://github.com/JieweiWei
+ * @data Oct 19 2014
+ *
+ */
+ /*
+  * 使用 Jiewei Wei 开源的MD5算法实现
+  */
 #ifndef MD5_H
 #define MD5_H
 
