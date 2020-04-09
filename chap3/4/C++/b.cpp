@@ -6,6 +6,11 @@
 
 int main() {
     gbn_protocol x(8881);
-    x.excute(8880);
+
+    std::thread([&x] { x.excute(8880); }).detach();
+    std::string s;
+    while (std::cin >> s) {
+        x.from_network_layer(s);
+    }
     return 0;
 }

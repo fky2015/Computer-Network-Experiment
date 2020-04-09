@@ -33,16 +33,11 @@ int randint() {
 
 class physical {
     // use socket udp to simulate physical layer
-
     int socket_id;
-
     socklen_t last_src_addrlen;
     sockaddr_in last_src;
-
-
 public:
     physical(int port) {
-
         socket_id = socket(AF_INET, SOCK_DGRAM, 0);
         sockaddr_in us{};
         us.sin_family = AF_INET;
@@ -113,7 +108,6 @@ public:
     bool verify() {
         h.withcrc = false;
         __int16_t reminder = *(__int16_t *) (info.data() + info.length() - 2);
-
 //        std::cout<<std::bitset<8>(info[info.length()-2])<<std::endl;
 //        std::cout<<std::bitset<8>(info[info.length()-1])<<std::endl;
 //        std::cout<<std::bitset<16>(reminder)<<std::endl;
@@ -209,13 +203,9 @@ class gbn_protocol {
 
 
     void send_frame(frame f, int dst) {
-//        std::cout << "Sent Frame:" << std::endl;
-//        f.debug();
         frame s = f;
         s.gen();
         auto x = (float) rand() / (float) RAND_MAX;
-//        std::cout<<loss_rate<<std::endl;
-//        std::cout<<error_rate<<std::endl;
         std::cout << x << std::endl;
         if (x < 1 / loss_rate) {
             std::cout << "Frame Loss" << std::endl;;
@@ -242,8 +232,6 @@ class gbn_protocol {
             frame t;
             t.h.timer = true;
             t.h.ack = f.h.seq;
-//            std::cout << (ti.clear ? "clear" : "not") << std::endl;
-//            std::cout << (this->frame_timer[f.h.seq]->clear ? "clear" : "not") << std::endl;
             this->fq.put_frame(t);
         }, wait_time);
     }
@@ -266,8 +254,9 @@ class gbn_protocol {
 
 public:
     FrameQueue fq;
+    int port;
 
-    gbn_protocol(int port) {
+    gbn_protocol(int port) : port(port) {
         error_rate = 0;
         loss_rate = 0;
         next_frame_to_send = 0;
@@ -294,7 +283,7 @@ public:
 
     void to_network_layer(std::string s) {
         std::ofstream myfile;
-        myfile.open("receive.txt", std::ios_base::app);
+        myfile.open("receive" + std::to_string(port) + ".txt", std::ios_base::app);
         myfile << s;
         myfile.close();
     }
@@ -320,6 +309,7 @@ public:
             }
         });
         recv.detach();
+
         int timercnt = 0;
         while (true) {
             frame f = fq.get_frame();
@@ -331,7 +321,7 @@ public:
                 for (int i = ack_expected; i < frame_buffer.size(); i++) {
                     send_frame(frame_buffer[i], dst);
                 }
-            } else {
+            }else {
                 timercnt = 0;
                 if (f.h.out) {
                     f.h.seq = next_frame_to_send;
