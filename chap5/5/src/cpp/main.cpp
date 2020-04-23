@@ -4,11 +4,11 @@
 #include <fstream>
 #include "RouterTable.h"
 using namespace std;
-const char conf[] = "ip.conf";
+
 string addr, dest;
 RouterTable routerTable;
 
-
+const char conf[] = "ip.conf";
 int main()
 {
     ifstream in(conf);

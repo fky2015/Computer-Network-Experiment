@@ -20,11 +20,8 @@ public:
     static IpAddress fromstring(const std::string &add,const std::string &dest);
     IpAddress(const std::bitset<32>& address, const std::bitset<32>& mask,std::string dest);
     explicit IpAddress(std::string dest);
-
     const std::bitset<32> &getAddress() const;
-
     const std::bitset<32> &getMask() const;
-
     const std::string &getDestination() const;
     static std::string BitSettoString(std::bitset<32> ipaddr);
     IpAddress();
