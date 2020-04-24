@@ -59,7 +59,7 @@ IpAddress RouterTable::match(const std::bitset<32> &destIp)
     unsigned int masklength = 0;
     IpAddress matchAddress;
     for (auto &elem:table)
-        if (elem.maskLength() >= masklength && elem.match(destIp))
+        if (elem.match(destIp) && elem.maskLength() >= masklength )
         {
             matchAddress = elem;
             masklength = elem.maskLength();

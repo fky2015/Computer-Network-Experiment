@@ -5,3 +5,4 @@ cmake-build-debug/
 *.out
 *.o
 CMakeLists.txt
+.vscode/

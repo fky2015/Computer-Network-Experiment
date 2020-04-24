@@ -78,7 +78,7 @@ string IpAddress::showInfo()
 
 bool IpAddress::match(const std::bitset<32> &addr)
 {
-    bool ret=(addr&this->mask).operator==(this->address);
+    bool ret=(addr&this->mask)==(this->address);
     cout <<showInfo()+"\tMatch:\t" << (ret ? "true" : "false") << endl;
     return ret;
 }
