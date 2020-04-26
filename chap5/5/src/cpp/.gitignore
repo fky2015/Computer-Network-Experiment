@@ -4,3 +4,5 @@ cmake-build-debug/
 *.iml
 *.out
 *.o
+CMakeLists.txt
+.vscode/

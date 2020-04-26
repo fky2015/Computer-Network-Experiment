@@ -1,0 +1,24 @@
+import socket
+import sys
+from enum import Enum
+
+class event_type:
+    frame_arrival = 1
+    cksum_err = 2
+    timeout = 3
+
+class frame_kind:
+    data = 1
+    ack = 2
+    nak = 3
+
+class frame:
+   def __init__(self):
+       kind = 1  # frame_kind
+       seq = 0  #sequence num
+       ack = 0  #acknowledge num
+       info = bytes("00011010" ,encoding = "utf8") #packet.info
+
+# next_frame_to_send: int
+#           s: frame
+#           buffer:
