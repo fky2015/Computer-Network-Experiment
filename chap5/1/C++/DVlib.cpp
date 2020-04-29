@@ -40,17 +40,7 @@ void cal_router_table(int (*cost)[maxn], int (*Dxy)[maxn], int (*table)[maxn]){
                     changedij = true;
                     table[i][j] = tag;
                 }               
-//                 if(tem >= inf){
-//                     printf("\nAfter %d exchanges:\n", ++ecnt);
-//                     for(int p = 0; p < n; p++){
-//                         for(int q = 0; q < n; q++){
-//                             printf("%d ", Dxy[p][q]);                        
-//                         }           
-//                         printf("\n");
-//                     }
-//                     printf("\n\nCan't reach!\n\n");
-//                     return;
-//                 }
+
                 if(changedij){
                     printf("\nAfter %d exchanges:\n", ++ecnt);
                     for(int p = 0; p < n; p++){
