@@ -32,7 +32,6 @@ int main() {
     get_config(filename, "FragOffset", str_off_arr);
 
     bigDatagram.length = atoi(strl);
-
     bigDatagram.ID = atoi(strid);
     bigDatagram.DF = false;
     bigDatagram.MF = false;
