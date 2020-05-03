@@ -1,8 +1,5 @@
 #include <iostream>
-#include <cstdio>
 #include <cstdlib>
-#include <fstream>
-#include <sstream>
 #include <cstring>
 #include "F_R.h"
 
@@ -43,12 +40,12 @@ int main() {
     cout<<"-----------big datagram information-----------"<<endl;
     cout<<"------ID----Length----Flags--------offset-----"<<endl;
     cout<<"      "<<bigDatagram.ID<<"   "<<bigDatagram.length<<"      "<<"DF="
-        <<bigDatagram.DF<<",MF="<<bigDatagram.MF<<"    "<<bigDatagram.offset<<endl<<endl<<endl;
+        <<bigDatagram.DF<<",MF="<<bigDatagram.MF<<"    "<<bigDatagram.offset<<endl<<endl;
 
-    cout<<"MTU: "<<mtu<<endl;
+    cout<<"MTU: "<<mtu<<endl<<endl;
     frag(mtu, bigDatagram);
 
-    cout<<"fragments are about to be reassembled..."<<endl;
+    cout<<endl<<"fragments are about to be reassembled..."<<endl;
     FragNum = atoi(strnum);
     datagram fragDatagram[FragNum];
     cout<<"fragmentation numbers: "<<FragNum<<endl;
