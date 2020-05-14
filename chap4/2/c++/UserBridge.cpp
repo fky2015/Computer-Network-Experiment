@@ -44,6 +44,9 @@
 #ifndef _XKEYCHECK_H
 #define _XKEYCHECK_H
 #endif
+#define WIN32
+#define WPCAP
+#define HAVE_REMOTE
 #pragma comment(lib, "Packet")
 #pragma comment(lib, "wpcap")
 #pragma comment(lib, "WS2_32")
@@ -55,7 +58,7 @@
 #include <string>
 #include <remote-ext.h>
 #include <iostream>
-#include <iomanip> 
+#include <iomanip>
 #include <cstdio>
 #include <time.h>
 #include <map>
@@ -129,8 +132,8 @@ volatile int kill_forwaders = 0;
 
 string mactostr(MAC_Address macaddr) {
 	char str[20];
-	
 	sprintf(str,"%02X-%02X-%02X-%02X-%02X-%02X", macaddr.address[0], macaddr.address[1], macaddr.address[2], macaddr.address[3], macaddr.address[4], macaddr.address[5]);
+
 	//cout << str << endl;
 	return string(str);
 }
@@ -154,7 +157,7 @@ int main()
 	 * Retrieve the device list
 	 */
 
-	if (pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf) == -1)
+	if (pcap_findalldevs_ex((char *)PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf) == -1)
 	{
 		fprintf(stderr, "Error in pcap_findalldevs: %s\n", errbuf);
 		exit(1);
