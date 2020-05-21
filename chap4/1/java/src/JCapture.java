@@ -58,18 +58,18 @@ public class JCapture {
 	public static void capture(JpcapCaptor jc, int times) {
 		for (int i = 0; i < times; i++) {
 			Packet pa = jc.getPacket();
-			analysis(pa);
-//			if (pa != null && pa instanceof TCPPacket) {
-//				TCPPacket tcpPacket = (TCPPacket) pa;
-//				if (tcpPacket.src_port == 80) {
-//					analysis(pa);
-//				}
-//				else {
-//					i--;
-//				}
-//			} else {
-//				i--;
-//			}
+//			analysis(pa);
+			if (pa != null && pa instanceof TCPPacket) {
+				TCPPacket tcpPacket = (TCPPacket) pa;
+				if (tcpPacket.src_port == 80) {
+					analysis(pa);
+				}
+				else {
+					i--;
+				}
+			} else {
+				i--;
+			}
 		}
 	}
 	
@@ -167,7 +167,7 @@ public class JCapture {
             System.out.println("Acknowledgment Number:" + tcp.ack_num);
             System.out.println("Time To Live:" + tcp.hop_limit);
             System.out.println("Version:" + tcp.version);
-            System.out.println("Option:" + byteToHex(tcp.option));
+//            System.out.println("Option:" + byteToHex(tcp.option));
             
             if (tcp.src_port == 80 || tcp.dst_port == 80) {
 				ishttp = 1;
