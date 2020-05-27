@@ -1,5 +1,6 @@
 package site.ironhead;
 
+import jdk.jfr.Unsigned;
 import org.junit.Test;
 
 import java.io.FileInputStream;
@@ -16,7 +17,7 @@ public class TCPAnalysis {
     private String TCPPacket;
     private final String SourceIP, DestIP, PseudoHeader;
     private final Boolean URG, ACK, PSH, RST, SYN, FIN;
-    private final Integer headerLength, SourcePort, DestPort, Sequence, ACKSeq, WindowSize;
+    private final Long headerLength, SourcePort, DestPort, Sequence, ACKSeq, WindowSize;
     private final String CheckSum, Emergency, Option, Data;
 
     public TCPAnalysis() {
@@ -38,11 +39,11 @@ public class TCPAnalysis {
         SourceIP = properties.getProperty("sourceip");
         DestIP = properties.getProperty("destip");
         PseudoHeader = IPtoHexString(SourceIP) + IPtoHexString(DestIP) + "00" + protocal + String.format("%04x", TCPPacket.length() / 2  );
-        SourcePort = Integer.parseUnsignedInt(TCPPacket.substring(0, 4), 16);
-        DestPort = Integer.parseUnsignedInt(TCPPacket.substring(4, 8), 16);
-        Sequence = Integer.parseUnsignedInt(TCPPacket.substring(8, 16), 16);
-        ACKSeq = Integer.parseUnsignedInt(TCPPacket.substring(16, 24), 16);
-        headerLength = Integer.parseUnsignedInt(TCPPacket.substring(24, 25), 16);
+        SourcePort = Long.parseUnsignedLong(TCPPacket.substring(0, 4), 16);
+        DestPort = Long.parseUnsignedLong(TCPPacket.substring(4, 8), 16);
+        Sequence = Long.parseUnsignedLong(TCPPacket.substring(8, 16), 16);
+        ACKSeq = Long.parseUnsignedLong(TCPPacket.substring(16, 24), 16);
+        headerLength = Long.parseUnsignedLong(TCPPacket.substring(24, 25), 16);
         int flags = Integer.parseUnsignedInt(TCPPacket.substring(26, 28), 16);
         URG = (flags & (1 << 5)) != 0;
         ACK = (flags & (1 << 4)) != 0;
@@ -50,15 +51,15 @@ public class TCPAnalysis {
         RST = (flags & (1 << 2)) != 0;
         SYN = (flags & (1 << 1)) != 0;
         FIN = (flags & 1) != 0;
-        WindowSize = Integer.parseUnsignedInt(TCPPacket.substring(28, 32), 16);
+        WindowSize = Long.parseUnsignedLong(TCPPacket.substring(28, 32), 16);
         CheckSum = TCPPacket.substring(32, 36);
         Emergency = TCPPacket.substring(36, 40);
         if (headerLength > 5) {
-            Option= TCPPacket.substring(40,headerLength*8);
+            Option= TCPPacket.substring(40, (int) (headerLength*8));
         } else {
             Option = "none";
         }
-        Data= TCPPacket.substring(headerLength*8);
+        Data= TCPPacket.substring((int) (headerLength*8));
     }
 
     public TCPAnalysis(String url) {
@@ -80,11 +81,11 @@ public class TCPAnalysis {
         SourceIP = properties.getProperty("sourceip");
         DestIP = properties.getProperty("destip");
         PseudoHeader = IPtoHexString(SourceIP) + IPtoHexString(DestIP) + "00" + protocal + String.format("%04x", TCPPacket.length() / 2);
-        SourcePort = Integer.parseUnsignedInt(TCPPacket.substring(0, 4), 16);
-        DestPort = Integer.parseUnsignedInt(TCPPacket.substring(4, 8), 16);
-        Sequence = Integer.parseUnsignedInt(TCPPacket.substring(8, 16), 16);
-        ACKSeq = Integer.parseUnsignedInt(TCPPacket.substring(16, 24), 16);
-        headerLength = Integer.parseUnsignedInt(TCPPacket.substring(24, 25), 16);
+        SourcePort = Long.parseUnsignedLong(TCPPacket.substring(0, 4), 16);
+        DestPort = Long.parseUnsignedLong(TCPPacket.substring(4, 8), 16);
+        Sequence = Long.parseUnsignedLong(TCPPacket.substring(8, 16), 16);
+        ACKSeq = Long.parseUnsignedLong(TCPPacket.substring(16, 24), 16);
+        headerLength = Long.parseUnsignedLong(TCPPacket.substring(24, 25), 16);
         int flags = Integer.parseUnsignedInt(TCPPacket.substring(26, 28), 16);
         URG = (flags & (1 << 5)) != 0;
         ACK = (flags & (1 << 4)) != 0;
@@ -92,21 +93,21 @@ public class TCPAnalysis {
         RST = (flags & (1 << 2)) != 0;
         SYN = (flags & (1 << 1)) != 0;
         FIN = (flags & 1) != 0;
-        WindowSize = Integer.parseUnsignedInt(TCPPacket.substring(28, 32), 16);
+        WindowSize = Long.parseUnsignedLong(TCPPacket.substring(28, 32), 16);
         CheckSum = TCPPacket.substring(32, 36);
         Emergency = TCPPacket.substring(36, 40);
         if (headerLength > 5) {
-            Option = TCPPacket.substring(40, headerLength * 8);
+            Option = TCPPacket.substring(40, (int) (headerLength * 8));
         } else {
             Option = "none";
         }
-        Data = TCPPacket.substring(headerLength * 8);
+        Data = TCPPacket.substring((int) (headerLength * 8));
     }
 
     public static String IPtoHexString(String ip) {
         Stream<String> ips = Stream.of(ip.split("\\."));
         return ips
-                .map(tmp -> String.format("%02x", Integer.parseUnsignedInt(tmp)))
+                .map(tmp -> String.format("%02x", Long.parseUnsignedLong(tmp)))
                 .collect(Collectors.joining());
     }
 
@@ -118,12 +119,12 @@ public class TCPAnalysis {
     private static String makeCheckSum(String data) {
         if (data.length()%4!=0)
             data+="00";
-        Integer dSum = 0;
+        long dSum = 0;
         int length = data.length();
         int index = 0;
         while (index < length) {
             String s = data.substring(index, index + 4); // 截取2位字符
-            dSum += Integer.parseUnsignedInt(s, 16); // 十六进制转成十进制 , 并计算十进制的总和
+            dSum += Long.parseUnsignedLong(s, 16); // 十六进制转成十进制 , 并计算十进制的总和
             index = index + 4;
         }
         while (dSum>0xffff){
