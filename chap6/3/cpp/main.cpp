@@ -71,7 +71,7 @@ int main() {
     buff.push_back('0');
     buff.push_back('6');
 
-    int len = ma["tcpsegment"].length()/2;
+    int len = ma["tcpsegment"].length() / 2;
     sprintf(temp, "%04x", len);
     for (int i = 0; i < 4; i++) {
         buff.push_back(temp[i]);
@@ -88,11 +88,13 @@ int main() {
     cout << "Data Offset: " << gethex(buff.substr(48, 1)) << endl;
     cout << "Flags: " << bitset<12>(gethex(buff.substr(49, 3))) << endl;
     cout << "Window: " << gethex(buff.substr(52, 4)) << endl;
-    cout << "Checksum: 0x" << hex<<gethex(buff.substr(56, 4)) << endl;
+    cout << "Checksum: 0x" << hex << gethex(buff.substr(56, 4)) << endl;
     cout << "Urgent Pointer: " << gethex(buff.substr(60, 4)) << endl;
 
-    if (buff.length() % 2 == 0)
+    if (buff.length() % 4 != 0) {
         buff.push_back('0');
+        buff.push_back('0');
+    }
     for (int i = 56; i < 60; i++) {
         buff[i] = '0';
     }
